@@ -2,7 +2,7 @@
 
 Welcome to **Hunt the Wumpus**, a classic text-based adventure game! 🏰
 
-A 1:1 python port of the original BASIC game from 1973
+A 1:1 Python port of the original BASIC game from 1973.
 
 The goal of this project is to be as similar as possible to the original source code.
 
@@ -32,6 +32,14 @@ The goal of this project is to be as similar as possible to the original source 
 **WELCOME TO 'HUNT THE WUMPUS'**
 
 The Wumpus lives in a cave of **20 rooms**. Each room has **3 tunnels** leading to other rooms. (Look at a dodecahedron to see how this works—if you don't know what a dodecahedron is, ask someone.)
+
+### Dodecahedron Illustration
+
+To better understand the cave layout, refer to the illustrations below:
+
+| 3D View | 2D View |
+|---------|---------|
+| ![3D Dodecahedron](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Hunt_the_Wumpus_map_3d.svg/152px-Hunt_the_Wumpus_map_3d.svg.png) | ![2D Dodecahedron](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Hunt_the_Wumpus_map.svg/152px-Hunt_the_Wumpus_map.svg.png) |
 
 ---
 
@@ -158,3 +166,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 For any questions, suggestions, or feedback, please use the [Issues](https://github.com/yourusername/hunt-the-wumpus/issues) section of this repository. Feel free to open a new issue for any inquiries related to the project.
 
+You can also follow me on [GitHub](https://github.com/yourusername) or [Twitter](https://twitter.com/votretwitter) for updates.

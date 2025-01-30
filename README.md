@@ -166,4 +166,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 For any questions, suggestions, or feedback, please use the [Issues](https://github.com/yourusername/hunt-the-wumpus/issues) section of this repository. Feel free to open a new issue for any inquiries related to the project.
 
-You can also follow me on [GitHub](https://github.com/yourusername) or [Twitter](https://twitter.com/votretwitter) for updates.
+You can also follow me on [GitHub](https://github.com/SPixs) or [Twitter](https://x.com/smametz) for updates.

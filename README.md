@@ -123,15 +123,15 @@ When you are **one room away** from the Wumpus or a hazard, the computer says:
 
 1. **Clone the Repository**
     ```bash
-    git clone https://github.com/yourusername/hunt-the-wumpus.git
+    git clone https://github.com/SPixs/wumpus_py.git 
     ```
 2. **Navigate to the Directory**
     ```bash
-    cd hunt-the-wumpus
+    cd wumpus_py
     ```
 3. **Run the Game**
     ```bash
-    python hunt_the_wumpus.py
+    python wumpus.py
     ```
 
 ---

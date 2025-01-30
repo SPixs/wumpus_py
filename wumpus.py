@@ -16,16 +16,16 @@ def fnb():
 def fnc():
     return int(randint(0,3))
 
-L = []
-O = None
-F = 0
+L = [] # ROOMS INDEX OF (player, wumpus, pit, pit, bats, bats)
+O = None # ACTION (1=SHOOT, 2=MOVE)
+F = 0 # GAME STATUS FLAG
+A = None # ARROWS
 
 # PRINT LOCATION & HAZARD WARNINGS
 def print_location():
     print()
     for J in range(1, 6):
         for K in range(0, 3):
-#            print(S[L[0]][K], " ", L[J])
             if S[L[0]][K] != L[J]+1:
                 continue
             if  J == 1:
@@ -42,9 +42,8 @@ def print_location():
 
 def choose_option():
     global O
-    print("SHOOT OR MOVE (S-M)")
     while True:
-        I = input()
+        I = input("SHOOT OR MOVE (S-M) ")
         if I == "S" or I == "s":
             O = 1
             return
@@ -70,8 +69,7 @@ def move():
     valid = False
     while not valid:
         while True:
-            print("WHERE TO")
-            LOC = input()
+            LOC = input("WHERE TO ")
             if (LOC.isdigit()):
                 LOC = int(LOC)-1
                 if (LOC >= 0 and LOC < 20):
@@ -81,11 +79,9 @@ def move():
         valid = LOC == L[0] or any(S[L[0]][K] == LOC + 1 for K in range(3))
 
         if not valid:
-            print("NOT POSSIBLE -")
+            print("NOT POSSIBLE - ", end='')
         else:
             L[0] = LOC 
-
-#    print("L=",L)
 
     # CHECK FOR HAZARDS
     while True:
@@ -111,8 +107,125 @@ def move():
     
     return
 
+# ARROW ROUTINE
 def shoot():
+    global F, A 
+    F = 0
+    # PATH OF ARROW
+    while True:
+        J = input("NO. OF ROOMS(1-5) ")
+        if J.isdigit():
+            J = int(J)
+            if J>0 and J<6:
+                break
+
+    P = []
+    for K in range(J):
+        while True:
+            PK = int(input("ROOM # "))-1
+            if K >= 2:
+                if (PK == P[K-2]):
+                    print("ARROWS AREN'T THAT CROOKED - TRY ANOTHER ROOM")
+                else:
+                    P.append(PK)
+                    break
+            else: 
+                P.append(PK)
+                break
+        
+    # SHOOT ARROW
+    ARROW_L = L[0]
+    for K in range(J):
+        path_found = False
+        for K1 in range(3):
+            path_found = path_found or S[ARROW_L][K1] == P[K]+1
+
+        if path_found:
+            ARROW_L = P[K]
+        else:
+            # NO TUNNEL FOR ARROW
+            ARROW_L = S[ARROW_L][fnb()]
+            
+        # SEE IF ARROW IS AT L(0) (player) OR L(1) (wumpus)
+        # WUMPUS HIT ?
+        if P[K] == L[1]:
+            print("AHA! YOU GOT THE WUMPUS!")
+            F = 1
+            return
+        # PLAYER HIT ?
+        if P[K] == L[0]:
+            print("OUCH! ARROW GOT YOU!")
+            F = -1
+            return
+
+    print("MISSED")
+    move_wumpus()
+    # AMMO CHECK
+    A -= 1
+    if A <= 0:
+        F = -1
+
     return
+
+# INSTRUCTIONS
+def print_instructions():
+    print("WELCOME TO 'HUNT THE WUMPUS'")
+    print("  THE WUMPUS LIVES IN A CAVE OF 20 ROOMS. EACH ROOM")
+    print("HAS 3 TUNNELS LEADING TO OTHER ROOMS. (LOOK AT A")
+    print("DODECAHEDRON TO SEE HOW THIS WORKS-IF YOU DON'T KNOW")
+    print("WHAT A DODECAHEDRON IS, ASK SOMEONE)")
+    print()
+    print("     HAZARDS:")
+    print(" BOTTOMLESS PITS - TWO ROOMS HAVE BOTTOMLESS PITS IN THEM")
+    print("     IF YOU GO THERE, YOU FALL INTO THE PIT (& LOSE!)")
+    print(" SUPER BATS - TWO OTHER ROOMS HAVE SUPER BATS. IF YOU")
+    print("     GO THERE, A BAT GRABS YOU AND TAKES YOU TO SOME OTHER")
+    print("     ROOM AT RANDOM. (WHICH MIGHT BE TROUBLESOME)")
+    print()
+    print("     WUMPUS:")
+    print(" THE WUMPUS IS NOT BOTHERED BY THE HAZARDS (HE HAS SUCKER")
+    print(" FEET AND IS TOO BIG FOR A BAT TO LIFT).  USUALLY")
+    print(" HE IS ASLEEP. TWO THINGS WAKE HIM UP: YOUR ENTERING")
+    print(" HIS ROOM OR YOUR SHOOTING AN ARROW.")
+    print("     IF THE WUMPUS WAKES, HE MOVES (P=.75) ONE ROOM")
+    print(" OR STAYS STILL (P=.25). AFTER THAT, IF HE IS WHERE YOU")
+    print(" ARE, HE EATS YOU UP (& YOU LOSE!)")
+    print()
+    print("     YOU:")
+    print(" EACH TURN YOU MAY MOVE OR SHOOT A CROOKED ARROW")
+    print("   MOVING: YOU CAN GO ONE ROOM (THRU ONE TUNNEL)")
+    print("   ARROWS: YOU HAVE 5 ARROWS. YOU LOSE WHEN YOU RUN OUT.")
+    print("   EACH ARROW CAN GO FROM 1 TO 5 ROOMS. YOU AIM BY TELLING")
+    print("   THE COMPUTER THE ROOM#S YOU WANT THE ARROW TO GO TO.")
+    print("   IF THE ARROW CAN'T GO THAT WAY (IE NO TUNNEL) IT MOVES")
+    print("   AT RAMDOM TO THE NEXT ROOM.")
+    print("     IF THE ARROW HITS THE WUMPUS, YOU WIN.")
+    print("     IF THE ARROW HITS YOU, YOU LOSE.")
+    print()
+    print("    WARNINGS:")
+    print("     WHEN YOU ARE ONE ROOM AWAY FROM WUMPUS OR HAZARD,")
+    print("    THE COMPUTER SAYS:")
+    print(" WUMPUS-  'I SMELL A WUMPUS'")
+    print(" BAT   -  'BATS NEARBY'")
+    print(" PIT   -  'I FEEL A DRAFT'")
+    print()
+
+    return
+
+# HUNT THE WUMPUS
+# ORIGINAL GAME BY GREGORY YOB (1973)
+# 1:1 PYTHON PORT BY SEBASTIEN MAMETZ (2025)
+if input("INSTRUCTIONS (Y-N)" ).upper() == "Y":
+    print_instructions()
+
+# ANNOUNCE WUMPUSII FOR ALL AFICIONADOS ... ADDED BY DAVE
+print()
+print("     ATTENTION ALL WUMPUS LOVERS!!!")
+print("     THERE ARE NOW TWO ADDITIONS TO THE WUMPUS FAMILY OF PROGRAMS.")
+print()
+print("     WUMP2:  SOME DIFFERENT CAVE ARRANGEMENTS")
+print("     WUMP3:  DIFFERENT HAZARDS")
+print()
 
 RESET_CAVE = True
 while True:
@@ -160,6 +273,6 @@ while True:
         print("HEE HEE HEE - THE WUMPUS'LL GETCHA NEXT TIME!!")
 
     L = list(M)
-    print("SAME SET-UP (Y-N)")
-    I = input().upper()
+    I = input("SAME SET-UP (Y-N) ").upper()
     RESET_CAVE = I != "Y"
+    
